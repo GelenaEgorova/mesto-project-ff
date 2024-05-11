@@ -19,57 +19,55 @@ function createCard (name, link, deleteCard) {
 }
 
 // @todo: Функция удаления карточки
-function deleteCard() {
+function deleteCard(event) {
   const placesItem = event.target.closest('.card');
   placesItem.remove();
 };
 
-
-function likeCard() {
-  if (event.target.classList.contains('card__like-button')) {
-    event.target.classList.toggle('card__like-button_is-active');
-    };
-};
-
-const popup= document.querySelector(".popup");
-
-function openImage() {
-  const imageItem = popup.querySelector('.popup__image');
-  popup.classList.add(imageItem)
-}
-
 // @todo: Вывести карточки на страницу
-function buildCards () {
+function buildCards() {
   initialCards.forEach(function (item) {
     cardList.append(createCard(item.name, item.link, deleteCard));
   });
 }
 
+function likeCard(event) {
+  if (event.target.classList.contains('card__like-button')) {
+    event.target.classList.toggle('card__like-button_is-active');
+    };
+};
 
-function openPopup() {
+function openImage(event) {
+  const popup= document.querySelector(".popup_type_image");
+  const imageItem = popup.querySelector('.popup__image');
+  imageItem.src = event.target.src
+  openPopup(event, popup);
+}
+
+function openPopup(evt, popup) {
   evt.preventDefault();
-  const popup = document.querySelector('.popup');
-  popup.addEventListener('mousedown', function(evt) {
-    popup.classList.add('popup_is-opened')
-  })
+  popup.classList.add('popup_is-opened');
+  popup.addEventListener('mousedown', buttonEscape);
+  document.addEventListener('keydown', buttonEscape);
 }
 
 function buttonEscape(evt) {
   if (evt.key === 'Escape') {
-      this.close();
+      closePopup(evt);
   };
 };
 
 function closePopup() {
-  popup.classList.remove('popup_opened');
+  evt.target.classList.remove('popup_is-opened');
+  document.removeEventListener('mousedown', buttonEscape);
   document.removeEventListener('keydown', buttonEscape);
 }
 
+/**
 overlay.addEventListener('click', function() {
   document.querySelector('popup_is-opened').classList.remove('popup_is-opened');
   this.classList.remove('active');
 });
+*/
 
-
-
-export {deleteCard, buildCards} 
+export {deleteCard, buildCards};

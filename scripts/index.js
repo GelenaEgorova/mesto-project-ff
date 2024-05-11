@@ -15,8 +15,7 @@ function createCard (name, link, deleteCard) {
 
 // @todo: Функция удаления карточки
 function deleteCard() {
-  const placesItem = event.target.closest('.-
-  p;l>>>>');
+  const placesItem = event.target.closest('p;l>>>>');
   placesItem.remove();
 };
 
