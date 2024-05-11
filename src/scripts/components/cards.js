@@ -53,12 +53,13 @@ function openPopup(evt, popup) {
 
 function buttonEscape(evt) {
   if (evt.key === 'Escape') {
-      closePopup(evt);
+      closePopup();
   };
 };
 
 function closePopup() {
-  evt.target.classList.remove('popup_is-opened');
+  const popup= document.querySelector(".popup_type_image");
+  popup.classList.remove('popup_is-opened');
   document.removeEventListener('mousedown', buttonEscape);
   document.removeEventListener('keydown', buttonEscape);
 }
