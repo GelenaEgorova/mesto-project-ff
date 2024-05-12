@@ -50,6 +50,7 @@ function openImage(event) {
 
 function openPopup(popup) {
   popup.classList.add('popup_is-opened');
+  popup.querySelector('.popup__close').addEventListener('click', closePopup);
   document.addEventListener("keydown", buttonEscape);
 }
 
@@ -59,8 +60,10 @@ function buttonEscape(evt) {
   };
 };
 
-function closePopup(popup) {
+function closePopup() {
+  const popup= document.querySelector(".popup_type_image");
   popup.classList.remove('popup_is-opened');
+  popup.querySelector('.popup__close').addEventListener('click', closePopup);
   document.removeEventListener('keydown', buttonEscape);
 }
 
