@@ -2,7 +2,7 @@ function createPopup(selector) {
     const popup = document.querySelector(selector);
     function setEventListeners() {
         popup.addEventListener('mousedown', function(evt) {
-            if (evt.target.classList.contains('popup_opened') || evt.target.classList.contains('popup__close')) {
+            if (evt.target.classList.contains('popup_is-opened') || evt.target.classList.contains('popup__close')) {
                 close();
             }
         });
@@ -87,7 +87,7 @@ function createPopupWithForm({ selector, handleFormSubmit }) {
         form.addEventListener('submit', function(evt) {
             evt.preventDefault();
             handleFormSubmit(getInputValues());
-            //renderLoading(true);
+            renderLoading(true);
         });
         popup.setEventListeners();
     }
@@ -102,6 +102,14 @@ function createPopupWithForm({ selector, handleFormSubmit }) {
         }
     }
 
+    function open(info){
+        console.log(`testing user info object: \n ${inputList}`);
+        if(info){
+            inputList.forEach( input => input.value = info[input.name] );
+        }
+        popup.open()
+    }
+
     function getInputValues() {
         const formValues = {};
         inputList.forEach(input => formValues[input.name] = input.value);
@@ -109,7 +117,7 @@ function createPopupWithForm({ selector, handleFormSubmit }) {
     }
 
     return {
-        open: popup.open,
+        open: open,
         close: popup.close,
         setEventListeners: setEventListeners
     };

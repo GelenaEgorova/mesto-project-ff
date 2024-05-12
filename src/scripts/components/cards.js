@@ -85,11 +85,12 @@ function setEventListeners() {
 
 const popup_edit = document.querySelector('.popup_type_edit')
 
+/**
 const editProfileBtn = document.querySelector ('.profile__edit-button');
 editProfileBtn.addEventListener('click', function () {
   openPopup(popup_edit);
 });
-
+*/
 const formElement = document.querySelector('.popup__form');
 const saveButton = document.querySelector('.popup__button');
 const inputItem = document.querySelector('.popup__input');

@@ -34,6 +34,8 @@ const projectImages = [
   { name: 'card_3', link: card_3}
 ];
 
+// раздел кнопок веб-приложения
+const editProfileBtn = document.querySelector ('.profile__edit-button');
 
 /**
 const profile = document.querySelector('.profile');
@@ -48,16 +50,6 @@ buildCards();
 /** новое обновление */
 
 // раздел профиля пользователя 
-
-const popupProfileEditor = createPopupWithForm({selector:'.popup_type_edit', 
-                           handleFormSubmit: (formData) => {
-                            console.log(formData);
-
-                           }
-                          });
-
-popupProfileEditor.setEventListeners();
-
 const user = createUserProfile('.profile');
 user.setUserInfo({title:'Жак-Ив Кусто',description:'Исследователь океана'});
 user.setProfileImage(avatar);
@@ -66,9 +58,25 @@ user.setUserInfo({title:'асин',description:'Сумасшедший чело�
 
 
 // Раздел Карточки
-
 const popUPCard = createPopupWithImage('.popup_type_image');
 const cardList = document.querySelector('.places__list');
 initialCards.forEach(function (item) {
   cardList.append(createCard(item,'#card-template',popUPCard.open));
 });
+
+
+// раздел редактора профиля пользователя
+const popupProfileEditor = createPopupWithForm({selector:'.popup_type_edit', 
+handleFormSubmit: (formData) => {
+                            console.log(formData);
+
+                           }
+                          });
+
+function openPopupEditProfile() {
+  popupProfileEditor.open(user.getUserInfo());
+}
+popupProfileEditor.setEventListeners();
+
+editProfileBtn.addEventListener('click', openPopupEditProfile);
+
