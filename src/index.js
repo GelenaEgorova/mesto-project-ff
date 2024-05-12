@@ -17,6 +17,8 @@ import initialCards from './scripts/constants';
 import createUserProfile from './scripts/components/UserProfile';
 import createCard from './scripts/components/card';
 
+import { createPopup, createPopupWithImage, createPopupWithConfirmation, createPopupWithForm } from './scripts/components/Popup';
+
 
 const projectImages = [
   { name: 'add-icon', link: addicon},
@@ -54,7 +56,10 @@ user.setUserInfo({title:'асин',description:'Сумасшедший чело�
 
 
 // Раздел Карточки
+
+const popUPCard = createPopupWithImage('.popup_type_image');
+console.log(popUPCard)
 const cardList = document.querySelector('.places__list');
 initialCards.forEach(function (item) {
-  cardList.append(createCard(item,'#card-template'));
+  cardList.append(createCard(item,'#card-template',popUPCard.open));
 });

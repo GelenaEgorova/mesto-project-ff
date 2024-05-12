@@ -19,31 +19,7 @@ export default function createCard(cardInfo, cardTemplate, openCard, openPopupWi
     function deleteCard(evt) {
         cardElement.closest('.card').remove();
     }
-
-    function openCard(name, link){
-        const popUpCard= document.querySelector(".popup_type_image");
-        const imageItem = popUpCard.querySelector('.popup__image');
-        imageItem.src = link;
-        popUpCard.classList.add('popup_is-opened');
-        //document.addEventListener('mousedown', closePopUpCard);
-        popUpCard.querySelector('.popup__close').addEventListener('click', closePopUpCard);
-        document.addEventListener('keydown', buttonEscape);
-    }
-
-    function buttonEscape(evt) {
-        console.log(evt.key);
-        if (evt.key === 'Escape') {
-            closePopUpCard();
-        };
-      }
-
-    function closePopUpCard() {
-        document.querySelector(".popup_type_image").classList.remove('popup_is-opened');
-        //document.removeEventListener('mousedown', closePopUpCard);
-        document.querySelector(".popup_type_image").querySelector('.popup__close').removeEventListener('click', closePopUpCard);
-        document.removeEventListener('keydown', buttonEscape);
-      };
-
+    
     function toggleLike(evt) {
         const lik = evt.target.classList;
         lik.contains('card__like-button') ? 
