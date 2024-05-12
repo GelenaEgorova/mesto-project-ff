@@ -35,3 +35,24 @@ profile.querySelector('.profile__description').textContent = 'Исследова
 
 buildCards();
 
+
+/** новое обновление */
+/**
+// эти три строки нужно переместить в раздел импорта в начале файла.
+import initialCards from './scripts/constants';
+import createUserProfile from './scripts/components/UserProfile';
+import createCard from './scripts/components/card';
+
+
+// раздел профиля пользователя 
+const user = createUserProfile('.profile');
+user.setUserInfo({title:'Жак-Ив Кусто',description:'Исследователь океана'});
+user.setProfileImage(avatar);
+
+// Раздел Карточки
+const cardList = document.querySelector('.places__list');
+initialCards.forEach(function (item) {
+  cardList.append(createCard(item,'#card-template'));
+});
+
+*/
