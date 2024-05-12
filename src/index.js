@@ -27,8 +27,11 @@ const projectImages = [
 ];
 
 
-const profileImg = document.querySelector('.profile__image');
+const profile = document.querySelector('.profile');
 
-profileImg.style.backgroundImage = `url(${card_1})`;
+profile.querySelector('.profile__image').style.backgroundImage = `url(${card_1})`;
+profile.querySelector('.profile__title').textContent = 'Жак-Ив Кусто';
+profile.querySelector('.profile__description').textContent = 'Исследователь океана';
 
 buildCards();
+
