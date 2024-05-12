@@ -11,10 +11,12 @@ function createPopup(selector) {
     function close() {
         popup.classList.remove('popup_is-opened');
         document.removeEventListener('keydown', handleEscape);
+        popup.querySelector('.popup__close').removeEventListener('click', close);
     }
 
     function open() {
         popup.classList.add('popup_is-opened');
+        popup.querySelector('.popup__close').addEventListener('click', close);
         document.addEventListener('keydown', handleEscape);
     }
 
@@ -36,20 +38,14 @@ function createPopupWithImage(selector) {
     const popup = createPopup(selector);
     const imageScreen = popup.contains.querySelector('.popup__image');
     const imageCaption = popup.contains.querySelector('.popup__caption');
-    //console.log(`popup.contains : ${popup.contains} \n imageScreen : ${imageScreen} \n imageCaption : ${imageCaption}`)
-
+    
     function open(name, link) {
         imageCaption.textContent = name;
         imageScreen.src = link;
         imageScreen.alt = name;
-        popup.contains.querySelector('.popup__close').addEventListener('click', close);
         popup.open();
     }
 
-    function close(){
-        popup.contains.querySelector('.popup__close').removeEventListener('click', close);
-        popup.close();
-    }
 
     return {
         open: open,
@@ -84,14 +80,14 @@ function createPopupWithConfirmation(selector, deleteCard) {
 function createPopupWithForm({ selector, handleFormSubmit }) {
     const popup = createPopup(selector);
     const form = popup.contains.querySelector('.popup__form');
-    const inputList = form.querySelectorAll('.popup__item');
-    const submitButton = popup.querySelector('.popup__save');
+    const inputList = form.querySelectorAll('.popup__input');
+    const submitButton = popup.contains.querySelector('.popup__button');
 
     function setEventListeners() {
         form.addEventListener('submit', function(evt) {
             evt.preventDefault();
             handleFormSubmit(getInputValues());
-            renderLoading(true);
+            //renderLoading(true);
         });
         popup.setEventListeners();
     }

@@ -48,6 +48,16 @@ buildCards();
 /** новое обновление */
 
 // раздел профиля пользователя 
+
+const popupProfileEditor = createPopupWithForm({selector:'.popup_type_edit', 
+                           handleFormSubmit: (formData) => {
+                            console.log(formData);
+
+                           }
+                          });
+
+popupProfileEditor.setEventListeners();
+
 const user = createUserProfile('.profile');
 user.setUserInfo({title:'Жак-Ив Кусто',description:'Исследователь океана'});
 user.setProfileImage(avatar);
@@ -58,7 +68,6 @@ user.setUserInfo({title:'асин',description:'Сумасшедший чело�
 // Раздел Карточки
 
 const popUPCard = createPopupWithImage('.popup_type_image');
-console.log(popUPCard)
 const cardList = document.querySelector('.places__list');
 initialCards.forEach(function (item) {
   cardList.append(createCard(item,'#card-template',popUPCard.open));
