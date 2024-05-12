@@ -5,7 +5,7 @@ export default function createUserProfile(profileSection) {
     const profileImage = userProfile.querySelector('.profile__image');
 
     function getUserInfo() {
-        return { title: title.textContent, description: description.textContent };
+        return { title: userName.textContent, description: userDescription.textContent };
     }
 
     function setUserInfo(userInfo) {
