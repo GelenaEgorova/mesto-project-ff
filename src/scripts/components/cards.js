@@ -1,4 +1,4 @@
-import { initialCards } from "../constants";
+import initialCards from '../constants'
 
 // @todo: Темплейт карточки
 const card = document.querySelector('#card-template').content;
