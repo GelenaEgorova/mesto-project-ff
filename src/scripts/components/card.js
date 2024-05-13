@@ -1,5 +1,5 @@
-export default function createCard(cardInfo, cardTemplate, openCard, openPopupWithConfirmation, putLike, userId) {
-    const name = cardInfo.name;
+export default function createCard(cardInfo, cardTemplate, openCard, putLike, userId) {
+    const name = cardInfo.name || cardInfo['place-name'];
     const link = cardInfo.link;
     const cardElement = document.querySelector(cardTemplate).content.querySelector('.card').cloneNode(true);
     const cardTitle = cardElement.querySelector('.card__title');

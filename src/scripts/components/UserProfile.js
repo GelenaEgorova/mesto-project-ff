@@ -1,4 +1,4 @@
-export default function createUserProfile(profileSection) { //это просто наименование класса, если поменяем, то нужно будет только поменять класс в одном месте, а не везде
+export default function createUserProfile(profileSection) {
     const userProfile =  document.querySelector(profileSection);
     const userName = userProfile.querySelector('.profile__title');
     const userDescription = userProfile.querySelector('.profile__description');
@@ -9,7 +9,7 @@ export default function createUserProfile(profileSection) { //это прост�
     }
 
     function setUserInfo(userInfo) {
-        userName.textContent = userInfo.title;
+        userName.textContent = userInfo.names;
         userDescription.textContent = userInfo.description;
     }
 
@@ -17,7 +17,7 @@ export default function createUserProfile(profileSection) { //это прост�
         profileImage.style.backgroundImage = `url(${ProfileImage})`;
     }
 
-    return { // чтобы и спользовать функции внутри функции нужно сделать ретерн с объявлением объекта, как ниже
+    return {
         getUserInfo: getUserInfo,
         setUserInfo: setUserInfo,
         setProfileImage: setProfileImage

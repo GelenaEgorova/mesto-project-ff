@@ -1,5 +1,7 @@
 function createPopup(selector) {
     const popup = document.querySelector(selector);
+    popup.classList.add('popup_is-animated');
+    
     function setEventListeners() {
         popup.addEventListener('mousedown', function(evt) {
             if (evt.target.classList.contains('popup_is-opened') || evt.target.classList.contains('popup__close')) {
@@ -16,8 +18,8 @@ function createPopup(selector) {
 
     function open() {
         popup.classList.add('popup_is-opened');
-        popup.querySelector('.popup__close').addEventListener('click', close);
         document.addEventListener('keydown', handleEscape);
+        popup.querySelector('.popup__close').addEventListener('click', close);
     }
 
     function handleEscape(evt) {
@@ -54,60 +56,26 @@ function createPopupWithImage(selector) {
     };
 }
 
-function createPopupWithConfirmation(selector, deleteCard) {
-    const popup = createPopup(selector);
-
-    function setEventListeners() {
-        popup.addEventListener('submit', function(evt) {
-            evt.preventDefault();
-            deleteCard(card);
-        });
-        popup.setEventListeners();
-    }
-
-    function open(card) {
-        card = card;
-        popup.open();
-    }
-
-    return {
-        open: open,
-        close: popup.close,
-        setEventListeners: setEventListeners
-    };
-}
-
 function createPopupWithForm({ selector, handleFormSubmit }) {
     const popup = createPopup(selector);
     const form = popup.contains.querySelector('.popup__form');
     const inputList = form.querySelectorAll('.popup__input');
-    const submitButton = popup.contains.querySelector('.popup__button');
 
     function setEventListeners() {
         form.addEventListener('submit', function(evt) {
             evt.preventDefault();
             handleFormSubmit(getInputValues());
-            renderLoading(true);
+            popup.close();
         });
         popup.setEventListeners();
     }
-
-    function renderLoading(isLoading) {
-        if (isLoading) {
-            submitButton.textContent = 'Сохранение';
-            submitButton.classList.add('loading');
-        } else {
-            submitButton.classList.remove('loading');
-            submitButton.textContent = 'Сохранить';
-        }
-    }
-
+       
     function open(info){
-        console.log(`testing user info object: \n ${inputList}`);
         if(info){
             inputList.forEach( input => input.value = info[input.name] );
         }
-        popup.open()
+        popup.open();
+        setEventListeners();
     }
 
     function getInputValues() {
@@ -119,8 +87,8 @@ function createPopupWithForm({ selector, handleFormSubmit }) {
     return {
         open: open,
         close: popup.close,
-        setEventListeners: setEventListeners
+        setEventListeners: popup.setEventListeners
     };
 }
 
-export { createPopup, createPopupWithImage, createPopupWithConfirmation, createPopupWithForm };
+export { createPopupWithImage, createPopupWithForm };

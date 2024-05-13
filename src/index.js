@@ -10,73 +10,57 @@ import card_1 from './images/card_1.jpg';
 import card_2 from './images/card_2.jpg';
 import card_3 from './images/card_3.jpg';
 import './pages/index.css';
-import { buildCards } from './scripts/components/cards';
 
-// эти три строки нужно переместить в раздел импорта в начале файла.
-import initialCards from './scripts/constants';
 import createUserProfile from './scripts/components/UserProfile';
 import createCard from './scripts/components/card';
+import initialCards from './scripts/constants';
 
-import { createPopup, createPopupWithImage, createPopupWithConfirmation, createPopupWithForm } from './scripts/components/Popup';
-
-
-const projectImages = [
-  { name: 'add-icon', link: addicon},
-  { name: 'logo', link: logo},
-  { name: 'close', link: close},
-  { name: 'delete-icon', link: deleteicon},
-  { name: 'like-active', link: likeactive},
-  { name: 'like-inactive', link: likeinactive},
-  { name: 'edit-icon', link: editicon},
-  { name: 'avatar', link: avatar},
-  { name: 'card_1', link: card_1},
-  { name: 'card_2', link: card_2},
-  { name: 'card_3', link: card_3}
-];
+import { createPopupWithImage, createPopupWithForm } from './scripts/components/Popup';
 
 // раздел кнопок веб-приложения
 const editProfileBtn = document.querySelector ('.profile__edit-button');
-
-/**
-const profile = document.querySelector('.profile');
-
-profile.querySelector('.profile__image').style.backgroundImage = `url(${card_1})`;
-profile.querySelector('.profile__title').textContent = 'Жак-Ив Кусто';
-profile.querySelector('.profile__description').textContent = 'Исследователь океана';
-
-buildCards();
-
-*/
-/** новое обновление */
+const editPlaceBtn   = document.querySelector ('.profile__add-button');
 
 // раздел профиля пользователя 
 const user = createUserProfile('.profile');
-user.setUserInfo({title:'Жак-Ив Кусто',description:'Исследователь океана'});
+user.setUserInfo({names:'Жак-Ив Кусто',description:'Исследователь океана'});
 user.setProfileImage(avatar);
 
-user.setUserInfo({title:'асин',description:'Сумасшедший человек'});
 
 
 // Раздел Карточки
 const popUPCard = createPopupWithImage('.popup_type_image');
 const cardList = document.querySelector('.places__list');
 initialCards.forEach(function (item) {
-  cardList.append(createCard(item,'#card-template',popUPCard.open));
+  imageToCards(item)
 });
 
+function imageToCards(image){
+  cardList.prepend(createCard(image,'#card-template',popUPCard.open));
+}
+popUPCard.setEventListeners();
 
 // раздел редактора профиля пользователя
-const popupProfileEditor = createPopupWithForm({selector:'.popup_type_edit', 
-handleFormSubmit: (formData) => {
-                            console.log(formData);
-
-                           }
-                          });
+const popupProfileEditor = createPopupWithForm({
+  selector: '.popup_type_edit',
+  handleFormSubmit: (formData) => user.setUserInfo(formData)
+});
 
 function openPopupEditProfile() {
   popupProfileEditor.open(user.getUserInfo());
 }
+editProfileBtn.addEventListener('click', openPopupEditProfile);
 popupProfileEditor.setEventListeners();
 
-editProfileBtn.addEventListener('click', openPopupEditProfile);
+// добавить новый раздел карты
 
+const popupPlaceEditor = createPopupWithForm({
+  selector: '.popup_type_new-card',
+  handleFormSubmit: (formData) => imageToCards(formData)
+});
+
+function openPopupPlaceEditor() {
+  popupPlaceEditor.open();
+}
+editPlaceBtn.addEventListener('click', openPopupPlaceEditor);
+popupPlaceEditor.setEventListeners();
