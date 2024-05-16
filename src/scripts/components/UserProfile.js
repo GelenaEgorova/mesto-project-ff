@@ -1,25 +1,27 @@
-export default function createUserProfile(profileSection) {
+function createUserProfile(profileSection) {
     const userProfile =  document.querySelector(profileSection);
     const userName = userProfile.querySelector('.profile__title');
     const userDescription = userProfile.querySelector('.profile__description');
     const profileImage = userProfile.querySelector('.profile__image');
 
-    function getUserInfo() {
-        return { names: userName.textContent, description: userDescription.textContent };
-    }
-
-    function setUserInfo(userInfo) {
-        userName.textContent = userInfo.names;
-        userDescription.textContent = userInfo.description;
-    }
-
-    function setProfileImage(ProfileImage) {
-        profileImage.style.backgroundImage = `url(${ProfileImage})`;
-    }
-
     return {
-        getUserInfo: getUserInfo,
-        setUserInfo: setUserInfo,
-        setProfileImage: setProfileImage
+        name: userName,
+        description: userDescription,
+        image: profileImage
     };
 }
+
+function getUserInfo(user) {
+    return { names: user.name.textContent, description: user.description.textContent};
+}
+
+function setUserInfo(user, userInfo) {
+    user.name.textContent = userInfo.names;
+    user.description.textContent = userInfo.description;
+}
+
+function setProfileImage(user, ProfileImage) {
+    user.image.style.backgroundImage = `url('${ProfileImage}')`;
+}
+
+export {createUserProfile, getUserInfo, setUserInfo, setProfileImage}

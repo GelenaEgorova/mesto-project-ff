@@ -11,56 +11,54 @@ import card_2 from './images/card_2.jpg';
 import card_3 from './images/card_3.jpg';
 import './pages/index.css';
 
-import createUserProfile from './scripts/components/UserProfile';
 import createCard from './scripts/components/card';
 import initialCards from './scripts/constants';
 
 import { createPopupWithImage, createPopupWithForm } from './scripts/components/Popup';
+import {createUserProfile, getUserInfo, setUserInfo, setProfileImage} from './scripts/components/UserProfile';
 
-// раздел кнопок веб-приложения
+// раздел кнопок
 const editProfileBtn = document.querySelector ('.profile__edit-button');
 const editPlaceBtn   = document.querySelector ('.profile__add-button');
 
 // раздел профиля пользователя 
 const user = createUserProfile('.profile');
-user.setUserInfo({names:'Жак-Ив Кусто',description:'Исследователь океана'});
-user.setProfileImage(avatar);
+setUserInfo(user, {names:'Жак-Ив Кусто',description:'Исследователь океана'});
+setProfileImage(user, avatar);
 
 
 
 // Раздел Карточки
-const popUPCard = createPopupWithImage('.popup_type_image');
+
 const cardList = document.querySelector('.places__list');
 initialCards.forEach(function (item) {
   imageToCards(item)
 });
 
-function imageToCards(image){
-  cardList.prepend(createCard(image,'#card-template',popUPCard.open));
+function popUPCard(name,link){
+  createPopupWithImage('.popup_type_image',name,link);
 }
-popUPCard.setEventListeners();
 
-// раздел редактора профиля пользователя
-const popupProfileEditor = createPopupWithForm({
-  selector: '.popup_type_edit',
-  handleFormSubmit: (formData) => user.setUserInfo(formData)
-});
+function imageToCards(image){
+  cardList.prepend(createCard(image,'#card-template',popUPCard));
+}
 
+// раздел hедактирования профиля пользователя
 function openPopupEditProfile() {
-  popupProfileEditor.open(user.getUserInfo());
+  createPopupWithForm({
+    selector: '.popup_type_edit',
+    handleFormSubmit: (formData) => setUserInfo(user,formData),
+    info: getUserInfo(user)
+  });
 }
 editProfileBtn.addEventListener('click', openPopupEditProfile);
-popupProfileEditor.setEventListeners();
 
-// добавить новый раздел карты
-
-const popupPlaceEditor = createPopupWithForm({
-  selector: '.popup_type_new-card',
-  handleFormSubmit: (formData) => imageToCards(formData)
-});
+// добавить новый раздел карточки
 
 function openPopupPlaceEditor() {
-  popupPlaceEditor.open();
+  createPopupWithForm({
+    selector: '.popup_type_new-card',
+    handleFormSubmit: (formData) => imageToCards(formData)
+  });
 }
 editPlaceBtn.addEventListener('click', openPopupPlaceEditor);
-popupPlaceEditor.setEventListeners();

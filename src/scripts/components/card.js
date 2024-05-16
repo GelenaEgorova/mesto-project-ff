@@ -1,4 +1,4 @@
-export default function createCard(cardInfo, cardTemplate, openCard, putLike, userId) {
+export default function createCard(cardInfo, cardTemplate, openCard) {
     const name = cardInfo.name || cardInfo['place-name'];
     const link = cardInfo.link;
     const cardElement = document.querySelector(cardTemplate).content.querySelector('.card').cloneNode(true);
@@ -7,35 +7,26 @@ export default function createCard(cardInfo, cardTemplate, openCard, putLike, us
     const cardLike = cardElement.querySelector('.card__like-button');
     const deleteButton = cardElement.querySelector('.card__delete-button');
     
-    function setEventListeners() {
-        cardImage.addEventListener('click', function() {
-            openCard(name, link);
-        });
-        cardLike.addEventListener('click',toggleLike);
-        deleteButton.addEventListener('click', deleteCard);
+    cardImage.addEventListener('click', function() {
+        openCard(name, link);
+    });
+    cardLike.addEventListener('click',toggleLike);
+    deleteButton.addEventListener('click', deleteCard);
+    cardTitle.textContent = name;
+    cardImage.src = link;
+    cardImage.alt = name;
+    return cardElement;
+};
+
+// Функция удаления карточки
+function deleteCard(evt) {
+    evt.target.closest('.card').remove();
+};
+
+// Функция добавления лайка
+function toggleLike(evt) {
+    const likе = evt.target.classList;
+    if (likе.contains('card__like-button')) { 
+    likе.toggle('card__like-button_is-active');
     }
-
-    // Функция удаления карточки
-    function deleteCard(evt) {
-        cardElement.closest('.card').remove();
-    }
-    
-    function toggleLike(evt) {
-        const lik = evt.target.classList;
-        lik.contains('card__like-button') ? 
-        lik.toggle('card__like-button_is-active'): 
-        lik.toggle('card__like-button_is-active')
-    }
-
-    function generateCard() {
-        cardTitle.textContent = name;
-        cardImage.src = link;
-        cardImage.alt = name;
-        setEventListeners();
-        return cardElement;
-    }
-
-    return generateCard();
-}
-
-
+};
