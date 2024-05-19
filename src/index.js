@@ -14,7 +14,18 @@ import './pages/index.css';
 import createCard from './scripts/components/card';
 import initialCards from './scripts/cards';
 
-import { setEventListeners, closeModal, openModal } from './scripts/components/modal';
+import { closeModal, openModal } from './scripts/components/modal';
+
+const buttonCloseList = document.querySelectorAll('.popup__close'); 
+buttonCloseList.forEach(btn => {
+  const popup = btn.closest('.popup');
+  btn.addEventListener('click', () => closeModal(popup)); 
+  popup.addEventListener('mousedown', (evt) => {
+        if (evt.target.classList.contains('popup')) {
+            closeModal(popup);
+        }
+    });
+}) 
 
 // раздел профиля пользователя
 const userProfile =  document.querySelector('.profile');
@@ -22,14 +33,12 @@ const userName = userProfile.querySelector('.profile__title');
 const userDescription = userProfile.querySelector('.profile__description');
 
 const profilePopup = document.querySelector('.popup_type_edit');
-const formElement = profilePopup.querySelector('.popup__form');
-const nameInput = formElement.querySelector('.popup__input_type_name');
-const jobInput = formElement.querySelector('.popup__input_type_description');
+const profileFormElement = profilePopup.querySelector('.popup__form');
+const nameInput = profileFormElement.querySelector('.popup__input_type_name');
+const jobInput = profileFormElement.querySelector('.popup__input_type_description');
 profilePopup.classList.add('popup_is-animated'); 
-setEventListeners(profilePopup);
 
 const editProfileBtn = document.querySelector ('.profile__edit-button');
-const profileCloseButton = profilePopup.querySelector('.popup__close');
 
 editProfileBtn.addEventListener('click', () => {
   nameInput.value=userName.textContent;
@@ -37,68 +46,54 @@ editProfileBtn.addEventListener('click', () => {
   openModal(profilePopup);
 });
 
-profileCloseButton.addEventListener('click', () => {
-  closeModal(profilePopup);
-});
-
-function handleFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  const nameValue = nameInput.value;
-  const jobValue = jobInput.value;
-  userName.textContent = nameValue;
-  userDescription.textContent = jobValue;
+  userName.textContent = nameInput.value;
+  userDescription.textContent = jobInput.value;
   
   closeModal(profilePopup);
 };
-formElement.addEventListener('submit', handleFormSubmit);
+profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 
 
 //раздел добавленных карточек мест
 const cardList = document.querySelector('.places__list');
-const popup = document.querySelector('.popup_type_image');
-const imageCloseButton = popup.querySelector('.popup__close');
-popup.classList.add('popup_is-animated'); 
-  setEventListeners(popup);
-
-imageCloseButton.addEventListener('click', () => {
-  closeModal(popup);
-});
+const popupOpenImage = document.querySelector('.popup_type_image');
+popupOpenImage.classList.add('popup_is-animated'); 
+const popupImage = popupOpenImage.querySelector ('.popup__image');
+const popupTitle = popupOpenImage.querySelector ('.popup__caption');
 
 function openCard(name, link) {
-  const popupImage = popup.querySelector ('.popup__image');
-  const popupTitle = popup.querySelector ('.popup__caption');
   popupImage.src = link;
   popupTitle.textContent = name;
-
-  openModal(popup)
+  popupImage.alt = name;
+  openModal(popupOpenImage)
 };
 
-initialCards.forEach(function (item) { 
-  cardList.append(createCard(item.name, item.link, openCard)); 
+initialCards.forEach(function (cardAdded) { 
+  cardList.append(createCard(cardAdded, openCard)); 
 }); 
 
 // раздел добавления карточек
-
 
 const placePopup = document.querySelector('.popup_type_new-card');
 const placeElement = placePopup.querySelector('.popup__form');
 const placeName = placeElement.querySelector('.popup__input_type_card-name');
 const placeImage = placeElement.querySelector('.popup__input_type_url');
-const placeCloseButton = placePopup.querySelector('.popup__close');
 const editPlaceBtn = document.querySelector('.profile__add-button');
 placePopup.classList.add('popup_is-animated'); 
-setEventListeners(placePopup);
 
 editPlaceBtn.addEventListener('click', () => {
   openModal(placePopup);
 });
-placeCloseButton.addEventListener('click', () => {
-  closeModal(placePopup);
-});
 
 function handleFormSubmitPlace (evt){
   evt.preventDefault();
-  cardList.prepend(createCard(placeName.value, placeImage.value, openCard));
+  const cardInfo = {
+    name: placeName.value,
+    link: placeImage.value
+  }
+  cardList.prepend(createCard(cardInfo, openCard));
   placeElement.reset();
   closeModal(placePopup);
 }
