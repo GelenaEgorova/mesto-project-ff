@@ -116,7 +116,7 @@ Promise.all([getUserInfo(),getInitialCards()])
 .then(([userInfo, cardAdded]) => {
   const userId=userInfo._id;
   cardAdded.forEach(function (cardAdded) { 
-    cardList.append(createCard(cardAdded, openCard, userId)); 
+    cardList.append(createCard(cardAdded, openCard, userInfo._id)); 
 }); 
 })
  .catch((err) => {
@@ -146,7 +146,7 @@ function handleFormSubmitPlace (evt){
     link: placeImage.value
   })
   .then((cardInfo) => {
-  cardList.prepend(createCard(cardInfo, openCard));
+  cardList.prepend(createCard(cardInfo, openCard, cardInfo.owner._id));
   placeElement.reset();})
   .catch((err) => {
     console.log(err)

@@ -12,7 +12,8 @@ export default function createCard(cardInfo, openCard, userId) {
     cardImage.alt = cardInfo.name;
     likeCounter.textContent = cardInfo.likes.length;
     if (userId !== cardInfo.owner._id) {
-        deleteButton.remove();
+        deleteButton.disabled = true;
+        deleteButton.classList.add('visually-hidden');
     } else{
         deleteButton.addEventListener('click', () => deleteCard(cardInfo._id, cardElement));
     }
