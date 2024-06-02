@@ -1,17 +1,6 @@
-import addicon from './images/add-icon.svg';
-import logo from './images/logo.svg';
-import close from './images/close.svg';
-import deleteicon from './images/delete-icon.svg';
-import likeactive from './images/like-active.svg';
-import likeinactive from './images/like-inactive.svg';
-import editicon from './images/edit-icon.svg';
-import avatar from './images/avatar.jpg';
-import card_1 from './images/card_1.jpg';
-import card_2 from './images/card_2.jpg';
-import card_3 from './images/card_3.jpg';
 import './pages/index.css';
 
-import createCard from './scripts/components/card';
+import { createCard, deleteCard, toggleLike} from './scripts/components/card';
 import initialCards from './scripts/cards';
 
 import { closeModal, openModal } from './scripts/components/modal';
@@ -34,11 +23,7 @@ function renderLoading(isLoading) {
   const openedPopup = document.querySelector('.popup_is-opened');
   if (openedPopup) {
       const saveButton = openedPopup.querySelector('.popup__button');
-      if (isLoading) {
-        saveButton.textContent = 'Сохранение...';
-      } else {
-        saveButton.textContent = 'Сохранить';
-      }
+      saveButton.textContent = isLoading?  'Сохранение...' : 'Сохранить';
   }
 }
 
@@ -85,16 +70,6 @@ function handleProfileFormSubmit(evt) {
     }); 
 };
 
-getUserInfo()
-  .then((userInfo) => {
-    userName.textContent = userInfo.name;
-    userDescription.textContent = userInfo.about;
-    userImage.style = `background-image: url('${userInfo.avatar}')`;
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
 profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 
 
@@ -115,8 +90,11 @@ function openCard(name, link) {
 Promise.all([getUserInfo(),getInitialCards()])
 .then(([userInfo, cardAdded]) => {
   const userId=userInfo._id;
+  userName.textContent = userInfo.name;
+  userDescription.textContent = userInfo.about;
+  userImage.style = `background-image: url('${userInfo.avatar}')`;
   cardAdded.forEach(function (cardAdded) { 
-    cardList.append(createCard(cardAdded, openCard, userInfo._id)); 
+    cardList.append(createCard(cardAdded, openCard, deleteCard, toggleLike, userInfo._id)); 
 }); 
 })
  .catch((err) => {
@@ -146,7 +124,7 @@ function handleFormSubmitPlace (evt){
     link: placeImage.value
   })
   .then((cardInfo) => {
-  cardList.prepend(createCard(cardInfo, openCard, cardInfo.owner._id));
+  cardList.prepend(createCard(cardInfo, openCard, deleteCard, toggleLike, cardInfo.owner._id));
   placeElement.reset();})
   .catch((err) => {
     console.log(err)

@@ -1,5 +1,5 @@
 import { deleteUserCard, likeCard, unlikeCard } from "./api";
-export default function createCard(cardInfo, openCard, userId) {
+export function createCard(cardInfo, openCard, deleteCard, toggleLike, userId) {
     const cardTamplate = document.querySelector('#card-template').content;
     const cardElement = cardTamplate.querySelector('.card').cloneNode(true);
     const cardTitle = cardElement.querySelector('.card__title');
@@ -22,31 +22,20 @@ export default function createCard(cardInfo, openCard, userId) {
     });
 
     cardLike.addEventListener('click', () => {
-        if (cardLike.classList.contains('card__like-button_is-active')) {
-        unlikeCard(cardInfo._id)
-            .then(updatedLikes => {
-                cardLike.classList.remove('card__like-button_is-active');
-                likeCounter.textContent = updatedLikes.likes.length;
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    } else {
-        likeCard(cardInfo._id)
-            .then(updatedLikes => {
-                toggleLike(cardLike);
-                likeCounter.textContent = updatedLikes.likes.length;
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }});
+        const likeMethod = cardLike.classList.contains('card__like-button_is-active') ? unlikeCard : likeCard;
+        likeMethod(cardInfo._id) 
+                .then((res) => {
+                   toggleLike(cardLike); 
+                   likeCounter.textContent = res.likes.length;
+                })
+        .catch(err => console.log(err)); 
+    });
 
     return cardElement;
 };
 
 // Функция удаления карточки
-function deleteCard(id, cardElement) {  
+export function deleteCard(id, cardElement) {  
     deleteUserCard(id)
     .then(() => {
         cardElement.remove();
@@ -57,7 +46,7 @@ function deleteCard(id, cardElement) {
   };
 
 // Функция добавления лайка
-function toggleLike(cardLike) { 
+export function toggleLike(cardLike) { 
 cardLike.classList.toggle('card__like-button_is-active'); 
 
 }; 
